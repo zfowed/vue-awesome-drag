@@ -12,10 +12,15 @@
 </template>
 
 <script>
-import debounce from '../../utils/debounce'
+import debounce from '../../../utils/debounce'
 // 拖动块
 export default {
-  inject: ['$dragGroup'],
+  name: 'vue-drag',
+  inject: {
+    $dragContainer: {
+      default: null
+    }
+  },
   props: {
     top: {
       type: Number,
@@ -72,16 +77,16 @@ export default {
   },
   computed: {
     currentScaleX () {
-      return this.scaleX || (this.$dragGroup && this.$dragGroup.scaleX) || 1
+      return this.scaleX || (this.$dragContainer && this.$dragContainer.scaleX) || 1
     },
     currentScaleY () {
-      return this.scaleY || (this.$dragGroup && this.$dragGroup.scaleY) || 1
+      return this.scaleY || (this.$dragContainer && this.$dragContainer.scaleY) || 1
     },
     currentAutoZindex () {
-      return (this.$dragGroup && this.$dragGroup.autoZindex) || false
+      return (this.$dragContainer && this.$dragContainer.autoZindex) || false
     },
     currentDisabled () {
-      return this.disabled || (this.$dragGroup && this.$dragGroup.disabled) || false
+      return this.disabled || (this.$dragContainer && this.$dragContainer.disabled) || false
     }
   },
   watch: {
@@ -131,8 +136,8 @@ export default {
     },
     updateLimit () {
       // 存在 父容器，限制在里面拖动
-      if (this.$dragGroup) {
-        const $container = this.$dragGroup.$el
+      if (this.$dragContainer) {
+        const $container = this.$dragContainer.$el
         const containerOffset = this.getOffsetByBody($container)
         const targetOffset = this.getOffsetByBody(this.$el)
 
@@ -160,9 +165,9 @@ export default {
       // 拖动
       if (event) this.isDrag = true
 
-      if (this.$dragGroup && this.$dragGroup.autoZindex) {
-        this.$dragGroup.zindex += 1
-        this.zindex = this.$dragGroup.zindex
+      if (this.$dragContainer && this.$dragContainer.autoZindex) {
+        this.$dragContainer.zindex += 1
+        this.zindex = this.$dragContainer.zindex
       }
 
       // 按下元素位置

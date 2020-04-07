@@ -1,5 +1,5 @@
 <template>
-  <div class="drag-group">
+  <div class="drag-container">
     <slot></slot>
   </div>
 </template>
@@ -7,6 +7,7 @@
 <script>
 // 拖动容器
 export default {
+  name: 'vue-drag-container',
   props: {
     scaleX: {
       type: Number
@@ -25,7 +26,7 @@ export default {
   },
   provide: function () {
     return {
-      $dragGroup: this
+      $dragContainer: this
     }
   },
   data () {
@@ -37,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.drag-group {
+.drag-container {
   position: relative;
 }
 </style>

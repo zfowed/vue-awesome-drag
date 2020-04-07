@@ -1,13 +1,13 @@
-import DragGroup from './src/drag-group.vue'
+import DragContainer from './src/drag-container.vue'
 import Drag from './src/drag.vue'
 
-DragGroup.install = function (Vue) {
-  Vue.component(DragGroup.name, DragGroup)
+DragContainer.install = function (Vue) {
+  Vue.component(DragContainer.name, DragContainer)
 }
 
 Drag.install = function (Vue) {
   Vue.component(Drag.name, Drag)
 }
 
-export { DragGroup, Drag }
+export { DragContainer, Drag }
 export default Drag
