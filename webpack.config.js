@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const mode = process.env.NODE_ENV || 'production'
 const debug = mode !== 'production'
@@ -83,6 +84,12 @@ const webpackConfig = {
     })
   ]
 }
+
+webpackConfig.plugins.push(...[
+  new CopyWebpackPlugin([
+    { from: getPath('lib'), to: getPath('./docs/lib') }
+  ])
+])
 
 // -------------------------------------------
 
