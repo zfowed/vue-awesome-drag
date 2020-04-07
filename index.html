@@ -31,13 +31,15 @@
       el: '#app',
       name: 'vue-awesome-drag',
       repo: 'https://github.com/zfowed/vue-awesome-drag',
-      loadSidebar: true,
-      loadNavbar: true,
+      // loadNavbar: '_navbar.md',
+      loadSidebar: 'sidebar.md',
       auto2top: true,
       homepage: 'README.md',
       basePath: 'docs',
       smartypants: true,
-      coverpage: ['/'],
+      coverpage: {
+        '/': 'coverpage.md'
+      },
       plugins: [
         DemoBoxVue.create(jsResources, cssResources, bootCode)
       ]
