@@ -1,6 +1,6 @@
 {
   "name": "vue-awesome-drag",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "这是一个基于 VUE 的随意拖拽组件",
   "main": "index.js",
   "scripts": {
