@@ -24,7 +24,8 @@
   },
   "homepage": "https://zfowed.github.io/vue-awesome-drag/",
   "files": [
-    "dist"
+    "lib",
+    "index.js"
   ],
   "devDependencies": {
     "@babel/core": "^7.9.0",
