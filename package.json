@@ -1,9 +1,10 @@
 {
   "name": "vue-awesome-drag",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "这是一个基于 VUE 的随意拖拽组件",
   "main": "index.js",
   "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack --watch --config ./webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js",
     "pub": "npm run build && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"

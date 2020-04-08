@@ -6,6 +6,7 @@
       left: `${ currentLeft }px`,
       'z-index': currentAutoZindex && zindex
     }"
+    @touchstart="handleMousedown"
     @mousedown="handleMousedown">
     <slot :is-drag="isDrag" :disabled="currentDisabled"></slot>
   </span>
@@ -157,10 +158,28 @@ export default {
       this.handleMousemove()
       this.handleMouseup()
     },
-    handleMousedown (event) {
+
+    handleMousedown (_event) {
+      
+      const event = { clientX: 0, clientY: 0 }
+      if (_event) {
+        if (_event.touches && _event.touches[0]) {
+          event.clientX = _event.touches[0].clientX
+          event.clientY = _event.touches[0].clientY
+        } else {
+          event.clientX = _event.clientX
+          event.clientY = _event.clientY
+        }
+      } else {
+        event.clientX = this.getOffsetByBody(this.$el).left
+        event.clientY = this.getOffsetByBody(this.$el).top
+      }
+
       // 注销事件
       document.removeEventListener('mousemove', this.handleMousemove)
       document.removeEventListener('mouseup', this.handleMouseup)
+      document.removeEventListener('touchmove', this.handleMousemove)
+      document.removeEventListener('touchend', this.handleMouseup)
 
       // 拖动
       if (event) this.isDrag = true
@@ -175,19 +194,42 @@ export default {
       this.targetdownOffset.left = this.$el.offsetLeft
 
       // 按下鼠标位置
-      this.mousedownPosition.x = (event && event.clientX) || this.getOffsetByBody(this.$el).left
-      this.mousedownPosition.y = (event && event.clientY) || this.getOffsetByBody(this.$el).top
+      this.mousedownPosition.x = event.clientX
+      this.mousedownPosition.y = event.clientY
 
       // 更新差异
       this.updateLimit()
 
-      document.addEventListener('mousemove', this.handleMousemove)
-      document.addEventListener('mouseup', this.handleMouseup)
+      document.addEventListener('mousemove', this.handleMousemove, { passive: false })
+      document.addEventListener('mouseup', this.handleMouseup, { passive: false })
+      document.addEventListener('touchmove', this.handleMousemove, { passive: false })
+      document.addEventListener('touchend', this.handleMouseup, { passive: false })
     },
-    handleMousemove (event) {
+    handleMousemove (_event) {
+
+      if (_event) {
+        _event.preventDefault && _event.preventDefault()
+        _event.returnValue = false
+        _event.stopPropagation && _event.stopPropagation()
+      }
+
+      const event = { clientX: 0, clientY: 0 }
+      if (_event) {
+        if (_event.touches && _event.touches[0]) {
+          event.clientX = _event.touches[0].clientX
+          event.clientY = _event.touches[0].clientY
+        } else {
+          event.clientX = _event.clientX
+          event.clientY = _event.clientY
+        }
+      } else {
+        event.clientX = this.getOffsetByBody(this.$el).left
+        event.clientY = this.getOffsetByBody(this.$el).top
+      }
+
       // 移动鼠标位置
-      this.mousemovePosition.x = (event && event.clientX) || this.mousedownPosition.x
-      this.mousemovePosition.y = (event && event.clientY) || this.mousedownPosition.y
+      this.mousemovePosition.x = event.clientX
+      this.mousemovePosition.y = event.clientY
 
       // 移动鼠标的距离
       this.mousemoveDistance.x = (this.mousemovePosition.x - this.mousedownPosition.x) / this.currentScaleX
@@ -208,6 +250,7 @@ export default {
       this.currentLeft = parseInt(this.targetmoveOffset.left)
       // this.$el.style.top = this.targetmoveOffset.top + 'px'
       // this.$el.style.left = this.targetmoveOffset.left + 'px'
+
     },
     handleMouseup (event) {
       // 拖动
@@ -215,6 +258,8 @@ export default {
       // 注销事件
       document.removeEventListener('mousemove', this.handleMousemove)
       document.removeEventListener('mouseup', this.handleMouseup)
+      document.removeEventListener('touchmove', this.handleMousemove)
+      document.removeEventListener('touchend', this.handleMouseup)
     }
   }
 }
